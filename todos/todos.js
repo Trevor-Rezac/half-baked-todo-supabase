@@ -6,6 +6,7 @@ import {
     logout,
     deleteAllTodos
 } from '../fetch-utils.js';
+import { renderTodo } from '../render-utils.js';
 // import { renderTodo } from '../render-utils.js';
 
 checkAuth();
@@ -39,25 +40,19 @@ async function displayTodos() {
 
     for (let todo of todos) {
         
-        const todoEl = document.createElement('div');
-        todoEl.classList.add('todo');
-        todoEl.textContent = todo.todo;
+        const todoEl = renderTodo(todo);
 
         // be sure to give each todo an event listener
-        if (todo.complete) {
-            todoEl.classList.add('complete');
-        } else {
-            todoEl.classList.remove('incomplete');
             // on click, complete that todo 
-            todoEl.addEventListener('click', async() => {
-                await completeTodo(todo.id);
-                displayTodos();
-            });
-        }
+        todoEl.addEventListener('click', async() => {
+            await completeTodo(todo.id);
+            displayTodos();
+        });
 
         todosEl.append(todoEl);
     }
 }
+
 
 // add an on load listener that fetches and displays todos on
 window.addEventListener('load', async() => {
